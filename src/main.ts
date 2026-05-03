@@ -114,6 +114,109 @@ let lastMouseY = 0;
 const focalLength = 500;
 const distance = 4.5;
 
+// Timer and moves state
+let startTime: number | null = null;
+let timerInterval: number | null = null;
+let movesCount = 0;
+let isScrambling = false;
+let isGameActive = false;
+
+function updateTimerDisplay() {
+  if (!isGameActive || !startTime) return;
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const minutes = Math.floor(elapsed / 60);
+  const seconds = elapsed % 60;
+  const minStr = minutes.toString().padStart(2, '0');
+  const secStr = seconds.toString().padStart(2, '0');
+  const timerElem = document.getElementById('timer-value');
+  if (timerElem) timerElem.textContent = `${minStr}:${secStr}`;
+}
+
+function updateBestRecordDisplay() {
+  const bestKey = `best_record_${currentSize}`;
+  const bestRecord = localStorage.getItem(bestKey);
+  const bestElem = document.getElementById('best-record');
+  const bestValElem = document.getElementById('best-record-val');
+
+  if (bestRecord && bestElem && bestValElem) {
+    const parsed = JSON.parse(bestRecord);
+    bestValElem.textContent = `${parsed.timeStr} | ${parsed.moves} 步`;
+    bestElem.style.display = 'block';
+  } else if (bestElem) {
+    bestElem.style.display = 'none';
+  }
+}
+
+function stopGameAndShowCongrats() {
+  isGameActive = false;
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+
+  const finalTime = document.getElementById('timer-value')?.textContent || '00:00';
+  const finalMoves = movesCount;
+
+  const overlay = document.getElementById('success-overlay');
+  if (overlay) overlay.classList.remove('hidden');
+
+  const successTime = document.getElementById('success-time');
+  if (successTime) successTime.textContent = finalTime;
+
+  const successMoves = document.getElementById('success-moves');
+  if (successMoves) successMoves.textContent = finalMoves.toString();
+
+  const bestKey = `best_record_${currentSize}`;
+  const currentBest = localStorage.getItem(bestKey);
+
+  let isNewBest = false;
+  if (!currentBest) {
+    isNewBest = true;
+  } else {
+    const parsed = JSON.parse(currentBest);
+    const currentSeconds = Math.floor((startTime ? (Date.now() - startTime) : 0) / 1000);
+    if (currentSeconds < parsed.seconds || (currentSeconds === parsed.seconds && finalMoves < parsed.moves)) {
+      isNewBest = true;
+    }
+  }
+
+  if (isNewBest) {
+    const currentSeconds = Math.floor((startTime ? (Date.now() - startTime) : 0) / 1000);
+    localStorage.setItem(bestKey, JSON.stringify({ seconds: currentSeconds, moves: finalMoves, timeStr: finalTime }));
+  }
+
+  updateBestRecordDisplay();
+}
+
+export function isCubeSolved(cubeletsArray: Cubelet[]): boolean {
+  const dirToColors: Record<string, Set<string>> = {};
+
+  for (const c of cubeletsArray) {
+    for (const f of c.faces) {
+      if (f.color !== '#282828') {
+        const nx = Math.round(f.normal.x);
+        const ny = Math.round(f.normal.y);
+        const nz = Math.round(f.normal.z);
+        const dir = `${nx},${ny},${nz}`;
+
+        if (!dirToColors[dir]) {
+          dirToColors[dir] = new Set();
+        }
+        dirToColors[dir].add(f.color);
+      }
+    }
+  }
+
+  const dirs = Object.keys(dirToColors);
+  if (dirs.length !== 6) return false;
+
+  for (const dir in dirToColors) {
+    if (dirToColors[dir].size !== 1) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 // Animation / Queue system for Moves
 interface Move {
   axis: 'X' | 'Y' | 'Z';
@@ -132,6 +235,11 @@ const fastSpeed = 0.3;
 
 // Add a move to the queue
 function addMove(axis: 'X' | 'Y' | 'Z', condition: (p: Point3D) => boolean, angle: number) {
+  if (isGameActive) {
+    movesCount++;
+    const movesElem = document.getElementById('moves-value');
+    if (movesElem) movesElem.textContent = movesCount.toString();
+  }
   moveQueue.push({ axis, condition, angle });
 }
 
@@ -146,9 +254,25 @@ function getCondition(axis: 'X' | 'Y' | 'Z', positive: boolean) {
     }
   };
 }
-
 // Scramble the cube
 function scrambleCube() {
+  // Hide any previous success dialogs
+  const overlay = document.getElementById('success-overlay');
+  if (overlay) overlay.classList.add('hidden');
+
+  isScrambling = true;
+  isGameActive = false;
+  movesCount = 0;
+  startTime = null;
+
+  const movesElem = document.getElementById('moves-value');
+  if (movesElem) movesElem.textContent = '0';
+  const timerElem = document.getElementById('timer-value');
+  if (timerElem) timerElem.textContent = '00:00';
+
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+
   const axes: ('X' | 'Y' | 'Z')[] = ['X', 'Y', 'Z'];
   const layers = currentSize === 2 ? [-0.5, 0.5] : [-1, 1];
   const angles = [Math.PI / 2, -Math.PI / 2];
@@ -180,6 +304,22 @@ function resetCube() {
   currentAngle = 0;
   affectedCubelets = [];
   cubelets = createRubiksCube(currentSize);
+
+  isScrambling = false;
+  isGameActive = false;
+  movesCount = 0;
+  startTime = null;
+
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+
+  const movesElem = document.getElementById('moves-value');
+  if (movesElem) movesElem.textContent = '0';
+  const timerElem = document.getElementById('timer-value');
+  if (timerElem) timerElem.textContent = '00:00';
+
+  const overlay = document.getElementById('success-overlay');
+  if (overlay) overlay.classList.add('hidden');
 }
 
 // Screen / Page Section management
@@ -208,6 +348,7 @@ function startCubeGame(size: 2 | 3) {
   currentSize = size;
   resetCube();
   showPage('page-game');
+  updateBestRecordDisplay();
   setTimeout(() => {
     resizeCanvas();
   }, 0);
@@ -312,6 +453,9 @@ if (canvas && ctx) {
 
   document.getElementById('btn-scramble')?.addEventListener('click', scrambleCube);
   document.getElementById('btn-reset')?.addEventListener('click', resetCube);
+  document.getElementById('btn-success-close')?.addEventListener('click', () => {
+    document.getElementById('success-overlay')?.classList.add('hidden');
+  });
 }
 
 // Canvas dynamic resize handling
@@ -346,12 +490,18 @@ function mainLoop() {
     currentMove = moveQueue.shift()!;
     currentAngle = 0;
     affectedCubelets = cubelets.filter((c) => currentMove!.condition(c.pos));
+  } else if (!currentMove && moveQueue.length === 0 && isScrambling) {
+    isScrambling = false;
+    isGameActive = true;
+    startTime = Date.now();
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = window.setInterval(updateTimerDisplay, 1000);
   }
 
   // Animating moves
   if (currentMove) {
-    const isScrambling = moveQueue.length > 2;
-    const speed = isScrambling ? fastSpeed : standardSpeed;
+    const isScramblingMove = moveQueue.length > 2;
+    const speed = isScramblingMove ? fastSpeed : standardSpeed;
     const targetAngle = currentMove.angle;
 
     if (targetAngle > 0) {
@@ -391,6 +541,10 @@ function mainLoop() {
       currentMove = null;
       affectedCubelets = [];
       currentAngle = 0;
+
+      if (isGameActive && isCubeSolved(cubelets)) {
+        stopGameAndShowCongrats();
+      }
     }
   }
 
