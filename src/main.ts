@@ -197,13 +197,17 @@ function mainLoop() {
         else if (currentMove.axis === 'Y') c.pos = rotateY(c.pos, targetAngle);
         else if (currentMove.axis === 'Z') c.pos = rotateZ(c.pos, targetAngle);
 
-        // Rotate face offsets
+        // Rotate face offsets and normals
         for (const f of c.faces) {
           f.localVertices = f.localVertices.map((p) => {
             if (currentMove!.axis === 'X') return rotateX(p, targetAngle);
             if (currentMove!.axis === 'Y') return rotateY(p, targetAngle);
             return rotateZ(p, targetAngle);
           });
+
+          if (currentMove!.axis === 'X') f.normal = rotateX(f.normal, targetAngle);
+          else if (currentMove!.axis === 'Y') f.normal = rotateY(f.normal, targetAngle);
+          else f.normal = rotateZ(f.normal, targetAngle);
         }
       }
 
