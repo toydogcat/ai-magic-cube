@@ -2,6 +2,9 @@ import './style.css';
 import { createRubiksCube, rotateX, rotateY, rotateZ } from './cube';
 import { renderCube } from './renderer';
 import type { Point3D, Cubelet } from './types';
+import { registerSW } from 'virtual:pwa-register';
+
+registerSW({ immediate: true });
 
 // State management
 let currentSize: 2 | 3 | 4 = 3;
