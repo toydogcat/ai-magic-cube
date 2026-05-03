@@ -396,11 +396,28 @@ body {
   transform: translateY(-2px);
 }
 
-.step-box h3 {
+.step-box h3, .step-box h4 {
   font-size: 1.1rem;
   font-weight: 600;
   color: #60a5fa;
   margin-bottom: 8px;
+}
+
+.category-heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 16px;
+  border-left: 4px solid #3b82f6;
+  padding-left: 12px;
+}
+
+.step-box code {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
 }
 
 .step-box p {
