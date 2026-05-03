@@ -36,6 +36,9 @@
             <button class="mode-select-btn" id="btn-mode-3x3">
               <span class="mode-title" data-i18n="btnMode3">3x3x3 魔術方塊模式</span>
             </button>
+            <button class="mode-select-btn" id="btn-mode-4x4">
+              <span class="mode-title" data-i18n="btnMode4">4x4x4 魔術方塊模式</span>
+            </button>
           </div>
         </div>
       </section>
@@ -93,6 +96,23 @@
                 <button class="cube-btn" id="btn-f-prime" title="Front CCW">F'</button>
                 <button class="cube-btn" id="btn-b" title="Back CW">B</button>
                 <button class="cube-btn" id="btn-b-prime" title="Back CCW">B'</button>
+            </div>
+
+            <div class="panel-section hidden" id="inner-layer-moves">
+              <h3 data-i18n="innerLayerMoves">內層轉動控制</h3>
+              <div class="button-grid">
+                <button class="cube-btn" id="btn-u-inner" title="Inner Up CW">u</button>
+                <button class="cube-btn" id="btn-u-prime-inner" title="Inner Up CCW">u'</button>
+                <button class="cube-btn" id="btn-d-inner" title="Inner Down CW">d</button>
+                <button class="cube-btn" id="btn-d-prime-inner" title="Inner Down CCW">d'</button>
+                <button class="cube-btn" id="btn-l-inner" title="Inner Left CW">l</button>
+                <button class="cube-btn" id="btn-l-prime-inner" title="Inner Left CCW">l'</button>
+                <button class="cube-btn" id="btn-r-inner" title="Inner Right CW">r</button>
+                <button class="cube-btn" id="btn-r-prime-inner" title="Inner Right CCW">r'</button>
+                <button class="cube-btn" id="btn-f-inner" title="Inner Front CW">f</button>
+                <button class="cube-btn" id="btn-f-prime-inner" title="Inner Front CCW">f'</button>
+                <button class="cube-btn" id="btn-b-inner" title="Inner Back CW">b</button>
+                <button class="cube-btn" id="btn-b-prime-inner" title="Inner Back CCW">b'</button>
               </div>
             </div>
 
@@ -155,6 +175,24 @@
               <div class="step-box">
                 <h4 data-i18n="step4Title">步驟 4: 頂面排列 (PLL)</h4>
                 <p data-i18n="step4Desc">調整頂層邊塊與角塊的相對位置，完成最後還原。總共有 21 種情況。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-category" style="margin-top: 32px;">
+            <h3 class="category-heading" data-i18n="guideMode4Title">4x4x4 解法 (降階法 Reduction Method)</h3>
+            <div class="guide-steps">
+              <div class="step-box">
+                <h4 data-i18n="mode4Step1Title">步驟 1: 組中心塊 (Centers)</h4>
+                <p data-i18n="mode4Step1Desc">先將六個面的中心 4 塊顏色各自組合對齊。利用簡單的 U, D, L, R 的內層轉動來拼好對應中心的 4 個色塊。</p>
+              </div>
+              <div class="step-box">
+                <h4 data-i18n="mode4Step2Title">步驟 2: 合併邊塊 (Edges)</h4>
+                <p data-i18n="mode4Step2Desc">將 12 條邊對應的兩兩邊塊兩兩合併，完成所有的邊塊合併。</p>
+              </div>
+              <div class="step-box">
+                <h4 data-i18n="mode4Step3Title">步驟 3: 3x3x3 還原 & 特例處理 (3x3 Stage & Parity)</h4>
+                <p data-i18n="mode4Step3Desc">當作 3x3x3 還原，注意最後可能會遇到單邊反轉或鄰角交換的「特例情況 (Parities)」，需用特例公式解決。</p>
               </div>
             </div>
           </div>

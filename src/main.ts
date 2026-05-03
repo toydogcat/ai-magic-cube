@@ -4,7 +4,7 @@ import { renderCube } from './renderer';
 import type { Point3D, Cubelet } from './types';
 
 // State management
-let currentSize: 2 | 3 = 3;
+let currentSize: 2 | 3 | 4 = 3;
 let cubelets = createRubiksCube(currentSize);
 
 // Language / Translation system
@@ -19,10 +19,12 @@ const i18n = {
     welcomeDesc: '請選擇您想挑戰的模式：',
     btnMode2: '2x2x2 魔術方塊模式',
     btnMode3: '3x3x3 魔術方塊模式',
+    btnMode4: '4x4x4 魔術方塊模式',
     btnBackHome: '返回模式選擇',
     btnGuide: '解法密技教學',
     btnLanguage: 'English',
     layerMoves: '層轉動控制',
+    innerLayerMoves: '內層轉動控制',
     instructions: '操作指引',
     rotateView: '旋轉視角：點擊並在畫布上拖曳滑鼠。',
     rotateLayers: '旋轉方塊層：點擊按鈕或使用按鍵。',
@@ -31,7 +33,7 @@ const i18n = {
     scrambleBtn: '隨機打亂',
     resetBtn: '恢復已還原',
     guideTitle: '魔術方塊解法密技教學',
-    guideDesc: '這裡提供 2x2x2 與 3x3x3 的主流還原步驟與核心口訣：',
+    guideDesc: '這裡提供 2x2x2 與 3x3x3 與 4x4x4 的主流還原步驟與核心口訣：',
     guideMode2Title: '2x2x2 解法 (底層架橋法 Layer-by-Layer)',
     mode2Step1Title: '步驟 1: 底層架橋 (First Layer)',
     mode2Step1Desc: '選定一個顏色作為底面（通常是白色），將四個對應角塊對齊側面顏色並拼在同一層。利用基本公式 R U R\' U\' 可調整角塊方向。',
@@ -48,6 +50,13 @@ const i18n = {
     step3Desc: '將頂層（通常是黃色）朝上的面全部翻轉為相同顏色，總共有 57 種情況。',
     step4Title: '步驟 4: 頂面排列 (PLL)',
     step4Desc: '調整頂層邊塊與角塊的相對位置，完成最後還原。總共有 21 種情況。',
+    guideMode4Title: '4x4x4 解法 (降階法 Reduction Method)',
+    mode4Step1Title: '步驟 1: 組中心塊 (Centers)',
+    mode4Step1Desc: '先將六個面的中心 4 塊顏色各自組合對齊。利用簡單的 U, D, L, R 的內層轉動來拼好對應中心的 4 個色塊。',
+    mode4Step2Title: '步驟 2: 合併邊塊 (Edges)',
+    mode4Step2Desc: '將 12 條邊對應的兩兩邊塊兩兩合併，完成所有的邊塊合併。',
+    mode4Step3Title: '步驟 3: 3x3x3 還原 & 特例處理 (3x3 Stage & Parity)',
+    mode4Step3Desc: '當作 3x3x3 還原，注意最後可能會遇到單邊反轉或鄰角交換的「特例情況 (Parities)」，需用特例公式解決。',
     backToGame: '回到遊戲',
     totalViews: '總訪問量',
     totalVisitors: '訪客數',
@@ -59,10 +68,12 @@ const i18n = {
     welcomeDesc: 'Please select a mode to play:',
     btnMode2: '2x2x2 Cube Mode',
     btnMode3: '3x3x3 Cube Mode',
+    btnMode4: '4x4x4 Cube Mode',
     btnBackHome: 'Back to Mode Selection',
     btnGuide: 'Solution Guide',
     btnLanguage: '繁體中文',
     layerMoves: 'LAYER MOVES',
+    innerLayerMoves: 'INNER LAYER MOVES',
     instructions: 'INSTRUCTIONS',
     rotateView: 'Rotate View: Click & Drag with your mouse on the canvas.',
     rotateLayers: 'Rotate Layers: Use buttons or keyboard shortcuts.',
@@ -71,7 +82,7 @@ const i18n = {
     scrambleBtn: 'Scramble Cube',
     resetBtn: 'Reset To Solved',
     guideTitle: 'Magic Cube Solution Guide',
-    guideDesc: 'Here are the key steps for both 2x2x2 and 3x3x3 cubes:',
+    guideDesc: 'Here are the key steps for 2x2x2, 3x3x3 and 4x4x4 cubes:',
     guideMode2Title: '2x2x2 Solving (Layer-by-Layer Method)',
     mode2Step1Title: 'Step 1: First Layer',
     mode2Step1Desc: 'Select a base color (usually white) and solve the four base corners with their adjacent colors. Use the Sexy Move R U R\' U\' to orient pieces.',
@@ -88,6 +99,13 @@ const i18n = {
     step3Desc: 'Orient the pieces on the last layer (usually yellow) so that all faces point in the same direction. There are 57 cases.',
     step4Title: 'Step 4: PLL (Permute Last Layer)',
     step4Desc: 'Swap the pieces on the last layer so they are in their final solved positions. There are 21 cases.',
+    guideMode4Title: '4x4x4 Solving (Reduction Method)',
+    mode4Step1Title: 'Step 1: Centers',
+    mode4Step1Desc: 'Group 4 center pieces of the same color together for all 6 sides. Use simple inner layer turns to pair them.',
+    mode4Step2Title: 'Step 2: Pair Edges',
+    mode4Step2Desc: 'Match edge pieces together into 12 pairs.',
+    mode4Step3Title: 'Step 3: 3x3 Stage & Parities',
+    mode4Step3Desc: 'Solve the cube like a 3x3 cube. Fix any parities if needed.',
     backToGame: 'Back to Game',
     totalViews: 'Total Views',
     totalVisitors: 'Total Visitors',
@@ -244,13 +262,20 @@ function addMove(axis: 'X' | 'Y' | 'Z', condition: (p: Point3D) => boolean, angl
 }
 
 // Layer filtering condition function
-function getCondition(axis: 'X' | 'Y' | 'Z', positive: boolean) {
+function getCondition(axis: 'X' | 'Y' | 'Z', positive: boolean, isInner: boolean = false) {
   return (p: Point3D) => {
     const val = axis === 'X' ? p.x : axis === 'Y' ? p.y : p.z;
     if (currentSize === 2) {
       return positive ? val > 0 : val < 0;
-    } else {
+    } else if (currentSize === 3) {
       return positive ? val > 0.5 : val < -0.5;
+    } else {
+      // 4x4x4 cube
+      if (isInner) {
+        return positive ? (val > 0 && val < 1.0) : (val < 0 && val > -1.0);
+      } else {
+        return positive ? val > 1.0 : val < -1.0;
+      }
     }
   };
 }
@@ -274,25 +299,15 @@ function scrambleCube() {
   timerInterval = null;
 
   const axes: ('X' | 'Y' | 'Z')[] = ['X', 'Y', 'Z'];
-  const layers = currentSize === 2 ? [-0.5, 0.5] : [-1, 1];
   const angles = [Math.PI / 2, -Math.PI / 2];
 
   for (let i = 0; i < 15; i++) {
     const ax = axes[Math.floor(Math.random() * axes.length)];
-    const val = layers[Math.floor(Math.random() * layers.length)];
+    const positive = Math.random() < 0.5;
+    const isInnerMove = currentSize === 4 ? Math.random() < 0.5 : false;
     const ang = angles[Math.floor(Math.random() * angles.length)];
 
-    let cond: (p: Point3D) => boolean;
-    if (currentSize === 2) {
-      if (ax === 'X') cond = (p) => (val > 0 ? p.x > 0 : p.x < 0);
-      else if (ax === 'Y') cond = (p) => (val > 0 ? p.y > 0 : p.y < 0);
-      else cond = (p) => (val > 0 ? p.z > 0 : p.z < 0);
-    } else {
-      if (ax === 'X') cond = (p) => (val > 0 ? p.x > 0.5 : p.x < -0.5);
-      else if (ax === 'Y') cond = (p) => (val > 0 ? p.y > 0.5 : p.y < -0.5);
-      else cond = (p) => (val > 0 ? p.z > 0.5 : p.z < -0.5);
-    }
-
+    const cond = getCondition(ax, positive, isInnerMove);
     addMove(ax, cond, ang);
   }
 }
@@ -344,10 +359,20 @@ function showPage(pageId: 'page-welcome' | 'page-game' | 'page-guide') {
 }
 
 // Mode Selection Initialization
-function startCubeGame(size: 2 | 3) {
+function startCubeGame(size: 2 | 3 | 4) {
   currentSize = size;
   resetCube();
   showPage('page-game');
+
+  const innerPanel = document.getElementById('inner-layer-moves');
+  if (innerPanel) {
+    if (size === 4) {
+      innerPanel.classList.remove('hidden');
+    } else {
+      innerPanel.classList.add('hidden');
+    }
+  }
+
   updateBestRecordDisplay();
   setTimeout(() => {
     resizeCanvas();
@@ -381,6 +406,10 @@ document.getElementById('btn-mode-2x2')?.addEventListener('click', () => {
 
 document.getElementById('btn-mode-3x3')?.addEventListener('click', () => {
   startCubeGame(3);
+});
+
+document.getElementById('btn-mode-4x4')?.addEventListener('click', () => {
+  startCubeGame(4);
 });
 
 // Canvas Init
@@ -444,6 +473,19 @@ if (canvas && ctx) {
     'btn-f-prime': () => addMove('Z', getCondition('Z', true), -Math.PI / 2),
     'btn-b': () => addMove('Z', getCondition('Z', false), -Math.PI / 2),
     'btn-b-prime': () => addMove('Z', getCondition('Z', false), Math.PI / 2),
+    // Inner layer controls
+    'btn-u-inner': () => addMove('Y', getCondition('Y', true, true), Math.PI / 2),
+    'btn-u-prime-inner': () => addMove('Y', getCondition('Y', true, true), -Math.PI / 2),
+    'btn-d-inner': () => addMove('Y', getCondition('Y', false, true), -Math.PI / 2),
+    'btn-d-prime-inner': () => addMove('Y', getCondition('Y', false, true), Math.PI / 2),
+    'btn-l-inner': () => addMove('X', getCondition('X', false, true), -Math.PI / 2),
+    'btn-l-prime-inner': () => addMove('X', getCondition('X', false, true), Math.PI / 2),
+    'btn-r-inner': () => addMove('X', getCondition('X', true, true), Math.PI / 2),
+    'btn-r-prime-inner': () => addMove('X', getCondition('X', true, true), -Math.PI / 2),
+    'btn-f-inner': () => addMove('Z', getCondition('Z', true, true), Math.PI / 2),
+    'btn-f-prime-inner': () => addMove('Z', getCondition('Z', true, true), -Math.PI / 2),
+    'btn-b-inner': () => addMove('Z', getCondition('Z', false, true), -Math.PI / 2),
+    'btn-b-prime-inner': () => addMove('Z', getCondition('Z', false, true), Math.PI / 2),
   };
 
   for (const btnId in moveMappings) {

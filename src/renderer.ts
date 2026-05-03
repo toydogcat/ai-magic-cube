@@ -13,7 +13,7 @@ export function renderCube(
   distance: number,
   width: number,
   height: number,
-  size: 2 | 3 = 3
+  size: 2 | 3 | 4 = 3
 ) {
   // 1. Clear the canvas with a luxurious gradient
   const bgGrad = ctx.createRadialGradient(width / 2, height / 2, 20, width / 2, height / 2, Math.max(width, height) / 1.5);
@@ -33,8 +33,8 @@ export function renderCube(
     dot: number;
   }[] = [];
 
-  // Coordinate scaling to make 3x3x3 fit perfectly in same viewbox
-  const coordScale = size === 2 ? 1.0 : 0.6667;
+  // Coordinate scaling to make cubes fit perfectly in same viewbox
+  const coordScale = size === 2 ? 1.0 : size === 3 ? 0.6667 : 0.48;
 
   // --------------------------------------------------------
   // Part 1: Gather exterior colored stickers from cubelets
@@ -98,8 +98,8 @@ export function renderCube(
         sumZ += p.z;
 
         // Project
-        const u = (p.x * focalLength) / (p.z + distance);
-        const v_proj = (p.y * focalLength) / (p.z + distance);
+        const u = (p.x * focalLength) / (distance - p.z);
+        const v_proj = (p.y * focalLength) / (distance - p.z);
         faceVerts.push({
           x: width / 2 + u,
           y: height / 2 - v_proj,
@@ -169,4 +169,55 @@ export function renderCube(
       ctx.fill();
     }
   }
+
+  // Draw a sleek legend overlay at the top-left of the canvas
+  ctx.save();
+  ctx.font = '12px "Outfit", sans-serif';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+
+  ctx.fillText('層轉動代號對照 (Layer Moves):', 20, 20);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+  ctx.font = 'bold 12px "Outfit", sans-serif';
+  ctx.fillText('U: 頂層 (Up)   |   D: 底層 (Down)   |   L: 左層 (Left)', 20, 38);
+  ctx.fillText('R: 右層 (Right)   |   F: 前層 (Front)   |   B: 後層 (Back)', 20, 56);
+
+  // Draw 3D Axes widget at the bottom-left of the canvas
+  const axisLength = 32;
+  const axes = [
+    { dir: { x: 1, y: 0, z: 0 }, color: '#ff4d4d', label: 'X' },
+    { dir: { x: 0, y: 1, z: 0 }, color: '#4dff4d', label: 'Y' },
+    { dir: { x: 0, y: 0, z: 1 }, color: '#4da6ff', label: 'Z' }
+  ];
+
+  const widgetX = 50;
+  const widgetY = height - 60;
+
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+  ctx.font = '11px "Outfit", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('方塊坐標軸 (Orientation):', widgetX - 30, widgetY - axisLength - 20);
+
+  for (const axis of axes) {
+    let p = axis.dir;
+    p = rotateY(p, thetaY);
+    p = rotateX(p, thetaX);
+
+    ctx.beginPath();
+    ctx.strokeStyle = axis.color;
+    ctx.lineWidth = 2.5;
+    ctx.moveTo(widgetX, widgetY);
+    ctx.lineTo(widgetX + p.x * axisLength, widgetY - p.y * axisLength);
+    ctx.stroke();
+
+    ctx.fillStyle = axis.color;
+    ctx.font = 'bold 11px "Outfit", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(axis.label, widgetX + p.x * (axisLength + 10), widgetY - p.y * (axisLength + 10));
+  }
+
+  ctx.restore();
 }
