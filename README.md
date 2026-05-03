@@ -45,6 +45,7 @@
 ### 1. 安裝依賴
 ```bash
 npm install
+# 若在 CI/CD 中發生 Vite 8 與 PWA 的 peer 依賴衝突，請執行 npm ci --legacy-peer-deps
 ```
 
 ### 2. 開啟本地開發環境
