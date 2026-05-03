@@ -183,7 +183,9 @@ function startCubeGame(size: 2 | 3) {
   currentSize = size;
   resetCube();
   showPage('page-game');
-  resizeCanvas();
+  setTimeout(() => {
+    resizeCanvas();
+  }, 0);
 }
 
 // Navigation / Header Event Listeners
@@ -202,6 +204,9 @@ document.getElementById('btn-toggle-guide')?.addEventListener('click', () => {
 
 document.getElementById('btn-back-to-game')?.addEventListener('click', () => {
   showPage('page-game');
+  setTimeout(() => {
+    resizeCanvas();
+  }, 0);
 });
 
 document.getElementById('btn-mode-2x2')?.addEventListener('click', () => {
@@ -287,8 +292,11 @@ if (canvas && ctx) {
 // Canvas dynamic resize handling
 function resizeCanvas() {
   if (canvas && canvas.parentElement) {
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.parentElement.clientHeight;
+    const cw = canvas.parentElement.clientWidth;
+    const ch = canvas.parentElement.clientHeight;
+    // Real width and height fallback to 600x500 to guarantee it always renders perfectly.
+    canvas.width = cw || 600;
+    canvas.height = ch || 500;
   }
 }
 window.addEventListener('resize', resizeCanvas);
