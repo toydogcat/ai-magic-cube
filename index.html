@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D 2x2x2 Magic Cube | Vanilla TypeScript & Canvas 2D</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app" class="app-container">
+      <header class="app-header">
+        <h1>Vanilla 3D Magic Cube</h1>
+        <p class="subtitle">Experience fully 3D Rubik's cube rendered via HTML5 Canvas 2D API</p>
+      </header>
+
+      <div class="main-content">
+        <!-- Cube Canvas -->
+        <div class="canvas-wrapper">
+          <canvas id="cube-canvas" width="600" height="500"></canvas>
+          <div class="controls-overlay">
+            <span class="label">Drag on canvas to rotate view</span>
+          </div>
+        </div>
+
+        <!-- Glassmorphism Floating Control Panel -->
+        <aside class="control-panel">
+          <div class="panel-section">
+            <h3>LAYER MOVES</h3>
+            <div class="button-grid">
+              <button class="cube-btn" id="btn-u" title="Up CW">U</button>
+              <button class="cube-btn" id="btn-u-prime" title="Up CCW">U'</button>
+              <button class="cube-btn" id="btn-d" title="Down CW">D</button>
+              <button class="cube-btn" id="btn-d-prime" title="Down CCW">D'</button>
+              <button class="cube-btn" id="btn-l" title="Left CW">L</button>
+              <button class="cube-btn" id="btn-l-prime" title="Left CCW">L'</button>
+              <button class="cube-btn" id="btn-r" title="Right CW">R</button>
+              <button class="cube-btn" id="btn-r-prime" title="Right CCW">R'</button>
+              <button class="cube-btn" id="btn-f" title="Front CW">F</button>
+              <button class="cube-btn" id="btn-f-prime" title="Front CCW">F'</button>
+              <button class="cube-btn" id="btn-b" title="Back CW">B</button>
+              <button class="cube-btn" id="btn-b-prime" title="Back CCW">B'</button>
+            </div>
+          </div>
+
+          <div class="panel-section action-section">
+            <button class="action-btn scramble-btn" id="btn-scramble">Scramble Cube</button>
+            <button class="action-btn reset-btn" id="btn-reset">Reset To Solved</button>
+          </div>
+
+          <div class="panel-section help-section">
+            <h4>Instructions</h4>
+            <ul>
+              <li><strong>Rotate View</strong>: Click & Drag with your mouse on the canvas.</li>
+              <li><strong>Rotate Layers</strong>: Use buttons or use <strong>Shift + Mouse drag</strong> directly on the cubelet.</li>
+              <li><strong>Keyboard Controls</strong>: Press keys directly: <code>U</code>, <code>D</code>, <code>L</code>, <code>R</code>, <code>F</code>, <code>B</code>. Hold <code>Shift</code> for counter-clockwise.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
