@@ -446,6 +446,36 @@ if (canvas && ctx) {
     isDragging = false;
   });
 
+  // Touch dragging to rotate view on mobile
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      isDragging = true;
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  window.addEventListener('touchmove', (e) => {
+    if (isDragging && e.touches.length === 1) {
+      const deltaX = e.touches[0].clientX - lastMouseX;
+      const deltaY = e.touches[0].clientY - lastMouseY;
+
+      thetaY -= deltaX * 0.005;
+      thetaX -= deltaY * 0.005;
+
+      thetaX = Math.max(-Math.PI / 2 + 0.1, Math.min(Math.PI / 2 - 0.1, thetaX));
+
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  window.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+
   // Keyboard controls
   window.addEventListener('keydown', (e) => {
     const k = e.key.toLowerCase();
