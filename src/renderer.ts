@@ -142,7 +142,7 @@ export function renderCube(
           allVisibleFaces.push({
             projected: faceVerts,
             color,
-            centerZ: sumZ / 4,
+            centerZ: isSticker ? (sumZ / 4) - 0.01 : (sumZ / 4),
             dot,
             isSticker,
           });
@@ -182,8 +182,13 @@ export function renderCube(
         ctx.fill();
       }
 
+      // 模擬貼紙厚度的側邊高光
+      ctx.strokeStyle = `rgba(255, 255, 255, ${intensity * 0.35})`;
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+
       // Add sticker fine border
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
       ctx.lineWidth = 1;
       ctx.stroke();
     } else {
