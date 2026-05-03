@@ -41,6 +41,8 @@ const i18n = {
     step4Title: '步驟 4: 頂面排列 (PLL)',
     step4Desc: '調整頂層邊塊與角塊的相對位置，完成最後還原。總共有 21 種情況。',
     backToGame: '回到遊戲',
+    totalViews: '總訪問量',
+    totalVisitors: '訪客數',
   },
   en: {
     appTitle: 'Vanilla 3D Magic Cube',
@@ -71,6 +73,8 @@ const i18n = {
     step4Title: 'Step 4: PLL (Permute Last Layer)',
     step4Desc: 'Swap the pieces on the last layer so they are in their final solved positions. There are 21 cases.',
     backToGame: 'Back to Game',
+    totalViews: 'Total Views',
+    totalVisitors: 'Total Visitors',
   },
 };
 
