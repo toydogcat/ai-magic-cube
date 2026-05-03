@@ -111,6 +111,7 @@ body {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 40px rgba(59, 130, 246, 0.05);
   background: #0d0e12;
   aspect-ratio: 1.2;
+  min-height: 400px;
 }
 
 #cube-canvas {

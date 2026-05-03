@@ -166,15 +166,20 @@ function resetCube() {
 function showPage(pageId: 'page-welcome' | 'page-game' | 'page-guide') {
   document.querySelectorAll('.page-content').forEach((el) => {
     el.classList.remove('active');
+    el.classList.add('hidden');
   });
+
   const current = document.getElementById(pageId);
-  if (current) current.classList.add('active');
+  if (current) {
+    current.classList.remove('hidden');
+    current.classList.add('active');
+  }
 
   const btnHome = document.getElementById('btn-back-home');
   if (pageId === 'page-welcome') {
-    if (btnHome) btnHome.classList.add('hidden');
+    btnHome?.classList.add('hidden');
   } else {
-    if (btnHome) btnHome.classList.remove('hidden');
+    btnHome?.classList.remove('hidden');
   }
 }
 
@@ -309,6 +314,12 @@ updateTranslations();
 // Render Loop
 function mainLoop() {
   if (!canvas || !ctx) return;
+
+  const gamePage = document.getElementById('page-game');
+  if (!gamePage || !gamePage.classList.contains('active')) {
+    requestAnimationFrame(mainLoop);
+    return;
+  }
 
   // If no move is currently animating, pop the next move from the queue
   if (!currentMove && moveQueue.length > 0) {
