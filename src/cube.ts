@@ -36,13 +36,24 @@ export function rotateZ(p: Point3D, angle: number): Point3D {
   };
 }
 
-// Check which face of the cube it is and assign color based on its position in the rubik's cube
-export function createRubiksCube(): Cubelet[] {
+// Check which face of the cube it is and assign color based on its position in the Rubik's cube
+export function createRubiksCube(size: 2 | 3 = 3): Cubelet[] {
   const positions: Point3D[] = [];
-  for (const x of [-0.5, 0.5]) {
-    for (const y of [-0.5, 0.5]) {
-      for (const z of [-0.5, 0.5]) {
-        positions.push({ x, y, z });
+
+  if (size === 2) {
+    for (const x of [-0.5, 0.5]) {
+      for (const y of [-0.5, 0.5]) {
+        for (const z of [-0.5, 0.5]) {
+          positions.push({ x, y, z });
+        }
+      }
+    }
+  } else {
+    for (const x of [-1, 0, 1]) {
+      for (const y of [-1, 0, 1]) {
+        for (const z of [-1, 0, 1]) {
+          positions.push({ x, y, z });
+        }
       }
     }
   }
@@ -59,7 +70,7 @@ export function createRubiksCube(): Cubelet[] {
         { x: 0.5, y: 0.5, z: -0.5 },
         { x: -0.5, y: 0.5, z: -0.5 },
       ],
-      checkExterior: (pos: Point3D) => pos.y > 0,
+      checkExterior: (pos: Point3D) => (size === 2 ? pos.y > 0 : pos.y > 0.5),
     },
     {
       name: 'D',
@@ -71,7 +82,7 @@ export function createRubiksCube(): Cubelet[] {
         { x: 0.5, y: -0.5, z: 0.5 },
         { x: -0.5, y: -0.5, z: 0.5 },
       ],
-      checkExterior: (pos: Point3D) => pos.y < 0,
+      checkExterior: (pos: Point3D) => (size === 2 ? pos.y < 0 : pos.y < -0.5),
     },
     {
       name: 'F',
@@ -83,7 +94,7 @@ export function createRubiksCube(): Cubelet[] {
         { x: 0.5, y: -0.5, z: 0.5 },
         { x: 0.5, y: 0.5, z: 0.5 },
       ],
-      checkExterior: (pos: Point3D) => pos.z > 0,
+      checkExterior: (pos: Point3D) => (size === 2 ? pos.z > 0 : pos.z > 0.5),
     },
     {
       name: 'B',
@@ -95,7 +106,7 @@ export function createRubiksCube(): Cubelet[] {
         { x: -0.5, y: -0.5, z: -0.5 },
         { x: -0.5, y: 0.5, z: -0.5 },
       ],
-      checkExterior: (pos: Point3D) => pos.z < 0,
+      checkExterior: (pos: Point3D) => (size === 2 ? pos.z < 0 : pos.z < -0.5),
     },
     {
       name: 'L',
@@ -107,7 +118,7 @@ export function createRubiksCube(): Cubelet[] {
         { x: -0.5, y: -0.5, z: 0.5 },
         { x: -0.5, y: 0.5, z: 0.5 },
       ],
-      checkExterior: (pos: Point3D) => pos.x < 0,
+      checkExterior: (pos: Point3D) => (size === 2 ? pos.x < 0 : pos.x < -0.5),
     },
     {
       name: 'R',
@@ -119,7 +130,7 @@ export function createRubiksCube(): Cubelet[] {
         { x: 0.5, y: -0.5, z: -0.5 },
         { x: 0.5, y: 0.5, z: -0.5 },
       ],
-      checkExterior: (pos: Point3D) => pos.x > 0,
+      checkExterior: (pos: Point3D) => (size === 2 ? pos.x > 0 : pos.x > 0.5),
     },
   ];
 

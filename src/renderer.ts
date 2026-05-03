@@ -12,7 +12,8 @@ export function renderCube(
   focalLength: number,
   distance: number,
   width: number,
-  height: number
+  height: number,
+  size: 2 | 3 = 3
 ) {
   // 1. Clear the canvas with a luxurious gradient
   const bgGrad = ctx.createRadialGradient(width / 2, height / 2, 20, width / 2, height / 2, Math.max(width, height) / 1.5);
@@ -32,6 +33,9 @@ export function renderCube(
     dot: number;
   }[] = [];
 
+  // Coordinate scaling to make 3x3x3 fit perfectly in same viewbox
+  const coordScale = size === 2 ? 1.0 : 0.6667;
+
   // --------------------------------------------------------
   // Part 1: Gather exterior colored stickers from cubelets
   // --------------------------------------------------------
@@ -39,7 +43,7 @@ export function renderCube(
     const isAffected = affectedCubelets.includes(c);
 
     for (const f of c.faces) {
-      // 1. Skip internal faces completely
+      // Skip internal faces completely
       if (f.color === '#282828') {
         continue;
       }
@@ -49,10 +53,18 @@ export function renderCube(
       const worldVerts: Point3D[] = [];
 
       for (const vLocal of f.localVertices) {
-        let v: Point3D = { ...vLocal };
-        let cPos: Point3D = { ...c.pos };
+        let v: Point3D = {
+          x: vLocal.x * coordScale,
+          y: vLocal.y * coordScale,
+          z: vLocal.z * coordScale,
+        };
+        let cPos: Point3D = {
+          x: c.pos.x * coordScale,
+          y: c.pos.y * coordScale,
+          z: c.pos.z * coordScale,
+        };
 
-        // Scale sticker size slightly (e.g. 0.92) to leave a nice gap
+        // Scale sticker size slightly to leave a nice gap
         v.x *= 0.92;
         v.y *= 0.92;
         v.z *= 0.92;

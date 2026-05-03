@@ -3,62 +3,118 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D 2x2x2 Magic Cube | Vanilla TypeScript & Canvas 2D</title>
+    <title>3D Magic Cube | Vanilla TypeScript & Canvas 2D</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
   </head>
   <body>
     <div id="app" class="app-container">
+      
+      <!-- Navbar / Top header with language switch & mode toggle -->
       <header class="app-header">
-        <h1>Vanilla 3D Magic Cube</h1>
-        <p class="subtitle">Experience fully 3D Rubik's cube rendered via HTML5 Canvas 2D API</p>
+        <div class="top-nav">
+          <button class="nav-btn" id="btn-lang" data-i18n="btnLanguage">English</button>
+          <button class="nav-btn hidden" id="btn-back-home" data-i18n="btnBackHome">返回模式選擇</button>
+          <button class="nav-btn" id="btn-toggle-guide" data-i18n="btnGuide">解法密技教學</button>
+        </div>
+        <h1 id="app-title" data-i18n="appTitle">3D 魔術方塊模擬器</h1>
+        <p class="subtitle" id="app-desc" data-i18n="appDesc">使用 HTML5 Canvas 2D API 渲染的全 3D 魔術方塊體驗</p>
       </header>
 
-      <div class="main-content">
-        <!-- Cube Canvas -->
-        <div class="canvas-wrapper">
-          <canvas id="cube-canvas" width="600" height="500"></canvas>
-          <div class="controls-overlay">
-            <span class="label">Drag on canvas to rotate view</span>
+      <!-- 1. PAGE WELCOME: Selection of Cube size -->
+      <section id="page-welcome" class="page-content active">
+        <div class="welcome-card">
+          <h2 id="welcome-title" data-i18n="welcomeTitle">歡迎來到 3D 魔術方塊模擬器</h2>
+          <p id="welcome-desc" data-i18n="welcomeDesc">請選擇您想挑戰的模式：</p>
+          <div class="mode-buttons">
+            <button class="mode-select-btn" id="btn-mode-2x2">
+              <span class="mode-title" data-i18n="btnMode2">2x2x2 魔術方塊模式</span>
+            </button>
+            <button class="mode-select-btn" id="btn-mode-3x3">
+              <span class="mode-title" data-i18n="btnMode3">3x3x3 魔術方塊模式</span>
+            </button>
           </div>
         </div>
+      </section>
 
-        <!-- Glassmorphism Floating Control Panel -->
-        <aside class="control-panel">
-          <div class="panel-section">
-            <h3>LAYER MOVES</h3>
-            <div class="button-grid">
-              <button class="cube-btn" id="btn-u" title="Up CW">U</button>
-              <button class="cube-btn" id="btn-u-prime" title="Up CCW">U'</button>
-              <button class="cube-btn" id="btn-d" title="Down CW">D</button>
-              <button class="cube-btn" id="btn-d-prime" title="Down CCW">D'</button>
-              <button class="cube-btn" id="btn-l" title="Left CW">L</button>
-              <button class="cube-btn" id="btn-l-prime" title="Left CCW">L'</button>
-              <button class="cube-btn" id="btn-r" title="Right CW">R</button>
-              <button class="cube-btn" id="btn-r-prime" title="Right CCW">R'</button>
-              <button class="cube-btn" id="btn-f" title="Front CW">F</button>
-              <button class="cube-btn" id="btn-f-prime" title="Front CCW">F'</button>
-              <button class="cube-btn" id="btn-b" title="Back CW">B</button>
-              <button class="cube-btn" id="btn-b-prime" title="Back CCW">B'</button>
+      <!-- 2. PAGE GAME: Canvas + Controls -->
+      <section id="page-game" class="page-content hidden">
+        <div class="main-content">
+          <!-- Cube Canvas -->
+          <div class="canvas-wrapper">
+            <canvas id="cube-canvas" width="600" height="500"></canvas>
+            <div class="controls-overlay">
+              <span class="label" data-i18n="rotateView">旋轉視角：點擊並在畫布上拖曳滑鼠。</span>
             </div>
           </div>
 
-          <div class="panel-section action-section">
-            <button class="action-btn scramble-btn" id="btn-scramble">Scramble Cube</button>
-            <button class="action-btn reset-btn" id="btn-reset">Reset To Solved</button>
-          </div>
+          <!-- Glassmorphism Control Panel -->
+          <aside class="control-panel">
+            <div class="panel-section">
+              <h3 data-i18n="layerMoves">層轉動控制</h3>
+              <div class="button-grid">
+                <button class="cube-btn" id="btn-u" title="Up CW">U</button>
+                <button class="cube-btn" id="btn-u-prime" title="Up CCW">U'</button>
+                <button class="cube-btn" id="btn-d" title="Down CW">D</button>
+                <button class="cube-btn" id="btn-d-prime" title="Down CCW">D'</button>
+                <button class="cube-btn" id="btn-l" title="Left CW">L</button>
+                <button class="cube-btn" id="btn-l-prime" title="Left CCW">L'</button>
+                <button class="cube-btn" id="btn-r" title="Right CW">R</button>
+                <button class="cube-btn" id="btn-r-prime" title="Right CCW">R'</button>
+                <button class="cube-btn" id="btn-f" title="Front CW">F</button>
+                <button class="cube-btn" id="btn-f-prime" title="Front CCW">F'</button>
+                <button class="cube-btn" id="btn-b" title="Back CW">B</button>
+                <button class="cube-btn" id="btn-b-prime" title="Back CCW">B'</button>
+              </div>
+            </div>
 
-          <div class="panel-section help-section">
-            <h4>Instructions</h4>
-            <ul>
-              <li><strong>Rotate View</strong>: Click & Drag with your mouse on the canvas.</li>
-              <li><strong>Rotate Layers</strong>: Use buttons or use <strong>Shift + Mouse drag</strong> directly on the cubelet.</li>
-              <li><strong>Keyboard Controls</strong>: Press keys directly: <code>U</code>, <code>D</code>, <code>L</code>, <code>R</code>, <code>F</code>, <code>B</code>. Hold <code>Shift</code> for counter-clockwise.</li>
-            </ul>
+            <div class="panel-section action-section">
+              <button class="action-btn scramble-btn" id="btn-scramble" data-i18n="scrambleBtn">隨機打亂</button>
+              <button class="action-btn reset-btn" id="btn-reset" data-i18n="resetBtn">恢復已還原</button>
+            </div>
+
+            <div class="panel-section help-section">
+              <h4 data-i18n="instructions">操作指引</h4>
+              <ul>
+                <li><span data-i18n="rotateView">旋轉視角：點擊並在畫布上拖曳滑鼠。</span></li>
+                <li><span data-i18n="rotateLayers">旋轉方塊層：點擊按鈕或使用按鍵。</span></li>
+                <li><span data-i18n="keyboardControls">鍵盤快速鍵：直接按下</span> <code>U</code>, <code>D</code>, <code>L</code>, <code>R</code>, <code>F</code>, <code>B</code><span data-i18n="holdShift">。按住 Shift 鍵可進行逆時針旋轉。</span></li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- 3. PAGE SOLUTION GUIDE -->
+      <section id="page-guide" class="page-content hidden">
+        <div class="guide-card">
+          <h2 id="guide-title" data-i18n="guideTitle">3x3x3 魔術方塊解法密技</h2>
+          <p id="guide-desc" data-i18n="guideDesc">這裡提供主流解法 CFOP 的重點步驟與口訣：</p>
+          
+          <div class="guide-steps">
+            <div class="step-box">
+              <h3 data-i18n="step1Title">步驟 1: 底面十字 (Cross)</h3>
+              <p data-i18n="step1Desc">在底面（通常是白色）拼出一個正確對齊側面顏色的十字。這是整個還原的基礎。</p>
+            </div>
+            <div class="step-box">
+              <h3 data-i18n="step2Title">步驟 2: 前兩層 (F2L)</h3>
+              <p data-i18n="step2Desc">將底層的四個角塊與第二層的四個邊塊成對放入對應位置，同時完成兩層。</p>
+            </div>
+            <div class="step-box">
+              <h3 data-i18n="step3Title">步驟 3: 頂面定向 (OLL)</h3>
+              <p data-i18n="step3Desc">將頂層（通常是黃色）朝上的面全部翻轉為相同顏色，總共有 57 種情況。</p>
+            </div>
+            <div class="step-box">
+              <h3 data-i18n="step4Title">步驟 4: 頂面排列 (PLL)</h3>
+              <p data-i18n="step4Desc">調整頂層邊塊與角塊的相對位置，完成最後還原。總共有 21 種情況。</p>
+            </div>
           </div>
-        </aside>
-      </div>
+          <button class="action-btn back-to-game" id="btn-back-to-game" data-i18n="backToGame">回到遊戲</button>
+        </div>
+      </section>
+
     </div>
 
     <script type="module" src="/src/main.ts"></script>
