@@ -69,6 +69,9 @@ const i18n = {
     btnDailyDrawDesc: '今日運勢與智慧啟示',
     btnZhugeShenshu: '諸葛神數・孔明神算',
     btnZhugeShenshuDesc: '孔明三八四籤，測事解惑',
+    bgmTitle: '背景音樂',
+    bgmPlaying: '播放中',
+    bgmPaused: '已暫停',
   },
   en: {
     appTitle: 'Vanilla 3D Magic Cube',
@@ -124,6 +127,9 @@ const i18n = {
     btnDailyDrawDesc: 'Today\'s fortunes and wisdom reflections',
     btnZhugeShenshu: 'Zhuge Shenshu Divination',
     btnZhugeShenshuDesc: 'Kuang-Ming\'s 384 divine stanzas for decision-making',
+    bgmTitle: 'BGM Player',
+    bgmPlaying: 'Playing',
+    bgmPaused: 'Paused',
   },
 };
 
@@ -656,3 +662,86 @@ function mainLoop() {
 
 // Start rendering loop
 mainLoop();
+
+// BGM Player Setup
+const audio = new Audio('music/Kpop.mp3');
+audio.loop = true;
+audio.volume = 0.5;
+
+let isPlaying = false;
+
+const bgmPlayer = document.getElementById('bgm-player');
+const bgmTrigger = document.getElementById('bgm-trigger');
+const bgmCloseBtn = document.getElementById('bgm-close-btn');
+const playBtn = document.getElementById('bgm-play-btn');
+const playIcon = document.getElementById('play-icon');
+const pauseIcon = document.getElementById('pause-icon');
+const volumeSlider = document.getElementById('bgm-volume') as HTMLInputElement;
+const bgmStatus = document.getElementById('bgm-status');
+
+// Toggle Minimize/Expand state
+bgmTrigger?.addEventListener('click', () => {
+  bgmPlayer?.classList.remove('minimized');
+  bgmPlayer?.classList.add('expanded');
+});
+
+bgmCloseBtn?.addEventListener('click', () => {
+  bgmPlayer?.classList.remove('expanded');
+  bgmPlayer?.classList.add('minimized');
+});
+
+// Update play/pause status
+function updatePlayerState(playing: boolean) {
+  isPlaying = playing;
+  if (playing) {
+    audio.play().then(() => {
+      bgmPlayer?.classList.add('playing');
+      playIcon?.classList.add('hidden');
+      pauseIcon?.classList.remove('hidden');
+      if (bgmStatus) {
+        bgmStatus.textContent = i18n[currentLang].bgmPlaying || '播放中';
+        bgmStatus.setAttribute('data-i18n', 'bgmPlaying');
+      }
+    }).catch(err => {
+      console.warn("Autoplay was prevented by browser, waiting for user interaction.", err);
+      isPlaying = false;
+      bgmPlayer?.classList.remove('playing');
+      playIcon?.classList.remove('hidden');
+      pauseIcon?.classList.add('hidden');
+      if (bgmStatus) {
+        bgmStatus.textContent = i18n[currentLang].bgmPaused || '已暫停';
+        bgmStatus.setAttribute('data-i18n', 'bgmPaused');
+      }
+    });
+  } else {
+    audio.pause();
+    bgmPlayer?.classList.remove('playing');
+    playIcon?.classList.remove('hidden');
+    pauseIcon?.classList.add('hidden');
+    if (bgmStatus) {
+      bgmStatus.textContent = i18n[currentLang].bgmPaused || '已暫停';
+      bgmStatus.setAttribute('data-i18n', 'bgmPaused');
+    }
+  }
+}
+
+playBtn?.addEventListener('click', () => {
+  updatePlayerState(!isPlaying);
+});
+
+volumeSlider?.addEventListener('input', (e) => {
+  const vol = parseFloat((e.target as HTMLInputElement).value);
+  audio.volume = vol;
+});
+
+// Play background music automatically on first user click or interaction
+const startPlayingOnInteraction = () => {
+  if (!isPlaying) {
+    updatePlayerState(true);
+  }
+  document.removeEventListener('click', startPlayingOnInteraction);
+  document.removeEventListener('keydown', startPlayingOnInteraction);
+};
+
+document.addEventListener('click', startPlayingOnInteraction);
+document.addEventListener('keydown', startPlayingOnInteraction);

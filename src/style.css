@@ -586,3 +586,294 @@ body {
   color: #64748b;
   font-weight: 400;
 }
+
+/* Floating BGM Player */
+.bgm-player {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bgm-trigger {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.35), 0 0 15px rgba(59, 130, 246, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bgm-trigger:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 12px 36px rgba(59, 130, 246, 0.45), 0 0 25px rgba(139, 92, 246, 0.2);
+}
+
+.bgm-icon-note {
+  font-size: 1.4rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.bgm-player.playing .bgm-trigger .bgm-icon-note {
+  animation: spin 4s linear infinite;
+}
+
+.bgm-card {
+  width: 280px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45), 0 0 30px rgba(59, 130, 246, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  transform: scale(0.85) translateY(20px);
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bgm-player.minimized .bgm-card {
+  opacity: 0;
+  transform: scale(0.85) translateY(20px);
+  pointer-events: none;
+}
+
+.bgm-player.expanded .bgm-card {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: all;
+}
+
+.bgm-player.expanded .bgm-trigger {
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+
+.bgm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 8px;
+}
+
+.bgm-card-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #64748b;
+}
+
+.bgm-close-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.bgm-close-btn:hover {
+  color: #f3f4f6;
+}
+
+.bgm-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.disc-container {
+  width: 44px;
+  height: 44px;
+  position: relative;
+}
+
+.music-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1e293b 30%, #0f172a 70%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.bgm-player.playing .music-disc {
+  animation: spin 6s linear infinite;
+}
+
+.bgm-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.bgm-song-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f3f4f6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bgm-status {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.music-visualizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+  padding-right: 4px;
+}
+
+.visualizer-bar {
+  width: 3px;
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: 1.5px;
+  transform-origin: bottom;
+  transform: scaleY(0.2);
+  transition: transform 0.2s ease;
+}
+
+.bgm-player.playing .visualizer-bar {
+  transform: scaleY(1);
+}
+
+.bgm-player.playing .visualizer-bar:nth-child(1) { animation: bounce 0.8s ease-in-out infinite alternate; }
+.bgm-player.playing .visualizer-bar:nth-child(2) { animation: bounce 1.1s ease-in-out infinite alternate-reverse; }
+.bgm-player.playing .visualizer-bar:nth-child(3) { animation: bounce 0.9s ease-in-out infinite alternate; }
+.bgm-player.playing .visualizer-bar:nth-child(4) { animation: bounce 1.2s ease-in-out infinite alternate-reverse; }
+.bgm-player.playing .visualizer-bar:nth-child(5) { animation: bounce 0.7s ease-in-out infinite alternate; }
+
+@keyframes bounce {
+  from { transform: scaleY(0.2); }
+  to { transform: scaleY(1); }
+}
+
+.bgm-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.bgm-play-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--btn-bg);
+  border: 1px solid var(--panel-border);
+  color: #f3f4f6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.bgm-play-btn:hover {
+  background: var(--btn-hover);
+  border-color: #3b82f6;
+  transform: scale(1.05);
+}
+
+.bgm-volume-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--panel-border);
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+.volume-icon {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.bgm-volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  cursor: pointer;
+}
+
+.bgm-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.bgm-volume-slider::-webkit-slider-thumb:hover {
+  background: #60a5fa;
+  transform: scale(1.2);
+}
+
+.bgm-volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.bgm-volume-slider::-moz-range-thumb:hover {
+  background: #60a5fa;
+  transform: scale(1.2);
+}
+
+@media (max-width: 600px) {
+  .bgm-player {
+    bottom: 16px;
+    right: 16px;
+  }
+  .bgm-card {
+    width: 250px;
+  }
+}

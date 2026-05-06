@@ -254,6 +254,55 @@
         <span data-i18n="totalVisitors">訪客數</span>: <span id="busuanzi_value_site_uv"></span>
       </span>
     </footer>
+
+    <!-- Floating BGM Player -->
+    <div id="bgm-player" class="bgm-player minimized">
+      <!-- Minimized Trigger Button -->
+      <button class="bgm-trigger" id="bgm-trigger" title="BGM Player">
+        <span class="bgm-icon-note">🎵</span>
+      </button>
+
+      <!-- Expanded Player Card -->
+      <div class="bgm-card" id="bgm-card">
+        <div class="bgm-header">
+          <span class="bgm-card-title" data-i18n="bgmTitle">背景音樂</span>
+          <button class="bgm-close-btn" id="bgm-close-btn" title="Minimize">&minus;</button>
+        </div>
+        <div class="bgm-body">
+          <div class="disc-container">
+            <div class="music-disc" id="music-disc">
+              <span class="disc-inner">💿</span>
+            </div>
+          </div>
+          <div class="bgm-info">
+            <span class="bgm-song-name">K-pop BGM</span>
+            <span class="bgm-status" id="bgm-status" data-i18n="bgmPaused">已暫停</span>
+          </div>
+          <!-- Spectrum Visualizer -->
+          <div class="music-visualizer" id="music-visualizer">
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+            <div class="visualizer-bar"></div>
+          </div>
+        </div>
+        <div class="bgm-controls">
+          <button class="bgm-play-btn" id="bgm-play-btn">
+            <svg id="play-icon" viewBox="0 0 24 24" width="20" height="20">
+              <path fill="currentColor" d="M8 5v14l11-7z"/>
+            </svg>
+            <svg id="pause-icon" class="hidden" viewBox="0 0 24 24" width="20" height="20">
+              <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+          <div class="bgm-volume-container">
+            <span class="volume-icon">🔊</span>
+            <input type="range" id="bgm-volume" class="bgm-volume-slider" min="0" max="1" step="0.05" value="0.5" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 
