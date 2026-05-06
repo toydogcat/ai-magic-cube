@@ -63,6 +63,12 @@ const i18n = {
     backToGame: '回到遊戲',
     totalViews: '總訪問量',
     totalVisitors: '訪客數',
+    moreGamesTitle: '🔮 更多東方智慧與休閒遊戲',
+    moreGamesDesc: '探索更多有趣的東方智慧占卜與休閒小遊戲：',
+    btnDailyDraw: '每日抽卡',
+    btnDailyDrawDesc: '今日運勢與智慧啟示',
+    btnZhugeShenshu: '諸葛神數・孔明神算',
+    btnZhugeShenshuDesc: '孔明三八四籤，測事解惑',
   },
   en: {
     appTitle: 'Vanilla 3D Magic Cube',
@@ -112,6 +118,12 @@ const i18n = {
     backToGame: 'Back to Game',
     totalViews: 'Total Views',
     totalVisitors: 'Total Visitors',
+    moreGamesTitle: '🔮 More Eastern Wisdom & Casual Games',
+    moreGamesDesc: 'Explore more interesting Eastern wisdom divination & casual mini-games:',
+    btnDailyDraw: 'Daily Card Draw',
+    btnDailyDrawDesc: 'Today\'s fortunes and wisdom reflections',
+    btnZhugeShenshu: 'Zhuge Shenshu Divination',
+    btnZhugeShenshuDesc: 'Kuang-Ming\'s 384 divine stanzas for decision-making',
   },
 };
 

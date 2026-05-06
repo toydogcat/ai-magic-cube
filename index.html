@@ -1,106 +1,139 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0f172a" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>3D Magic Cube | Vanilla TypeScript & Canvas 2D</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/pwa-192.webp" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  </head>
 
-  <body>
-    <div id="app" class="app-container">
-      
-      <!-- Navbar / Top header with language switch & mode toggle -->
-      <header class="app-header">
-        <div class="top-nav">
-          <button class="nav-btn" id="btn-lang" data-i18n="btnLanguage">English</button>
-          <button class="nav-btn hidden" id="btn-back-home" data-i18n="btnBackHome">返回模式選擇</button>
-          <button class="nav-btn" id="btn-toggle-guide" data-i18n="btnGuide">解法密技教學</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>3D Magic Cube | Vanilla TypeScript & Canvas 2D</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/pwa-192.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</head>
+
+<body>
+  <div id="app" class="app-container">
+
+    <!-- Navbar / Top header with language switch & mode toggle -->
+    <header class="app-header">
+      <div class="top-nav">
+        <button class="nav-btn" id="btn-lang" data-i18n="btnLanguage">English</button>
+        <button class="nav-btn hidden" id="btn-back-home" data-i18n="btnBackHome">返回模式選擇</button>
+        <button class="nav-btn" id="btn-toggle-guide" data-i18n="btnGuide">解法密技教學</button>
+      </div>
+      <h1 id="app-title" data-i18n="appTitle">3D 魔術方塊模擬器</h1>
+      <p class="subtitle" id="app-desc" data-i18n="appDesc">使用 HTML5 Canvas 2D API 渲染的全 3D 魔術方塊體驗</p>
+    </header>
+
+    <!-- 1. PAGE WELCOME: Selection of Cube size -->
+    <section id="page-welcome" class="page-content active">
+      <div class="welcome-card">
+        <h2 id="welcome-title" data-i18n="welcomeTitle">歡迎來到 3D 魔術方塊模擬器</h2>
+        <p id="welcome-desc" data-i18n="welcomeDesc">請選擇您想挑戰的模式：</p>
+        <div class="mode-buttons">
+          <button class="mode-select-btn" id="btn-mode-2x2">
+            <span class="mode-title" data-i18n="btnMode2">2階魔術方塊模式</span>
+          </button>
+          <button class="mode-select-btn" id="btn-mode-3x3">
+            <span class="mode-title" data-i18n="btnMode3">3階魔術方塊模式</span>
+          </button>
+          <button class="mode-select-btn" id="btn-mode-4x4">
+            <span class="mode-title" data-i18n="btnMode4">4階魔術方塊模式</span>
+          </button>
         </div>
-        <h1 id="app-title" data-i18n="appTitle">3D 魔術方塊模擬器</h1>
-        <p class="subtitle" id="app-desc" data-i18n="appDesc">使用 HTML5 Canvas 2D API 渲染的全 3D 魔術方塊體驗</p>
-      </header>
+      </div>
 
-      <!-- 1. PAGE WELCOME: Selection of Cube size -->
-      <section id="page-welcome" class="page-content active">
-        <div class="welcome-card">
-          <h2 id="welcome-title" data-i18n="welcomeTitle">歡迎來到 3D 魔術方塊模擬器</h2>
-          <p id="welcome-desc" data-i18n="welcomeDesc">請選擇您想挑戰的模式：</p>
-          <div class="mode-buttons">
-            <button class="mode-select-btn" id="btn-mode-2x2">
-              <span class="mode-title" data-i18n="btnMode2">2x2x2 魔術方塊模式</span>
-            </button>
-            <button class="mode-select-btn" id="btn-mode-3x3">
-              <span class="mode-title" data-i18n="btnMode3">3x3x3 魔術方塊模式</span>
-            </button>
-            <button class="mode-select-btn" id="btn-mode-4x4">
-              <span class="mode-title" data-i18n="btnMode4">4x4x4 魔術方塊模式</span>
-            </button>
+      <!-- 更多東方智慧與休閒遊戲 -->
+      <div class="more-games-card">
+        <h2 id="more-games-title" data-i18n="moreGamesTitle">🔮 更多東方智慧與休閒遊戲</h2>
+        <p id="more-games-desc" data-i18n="moreGamesDesc">探索更多有趣的東方智慧占卜與休閒小遊戲：</p>
+        <div class="games-buttons">
+          <a href="https://toydogcat.github.io/ai-eastern-wisdom/daily-draw/" target="_blank" class="game-select-btn" id="btn-game-draw">
+            <span class="game-icon">🔮</span>
+            <div class="game-info">
+              <span class="game-title" data-i18n="btnDailyDraw">每日抽卡</span>
+              <span class="game-desc" data-i18n="btnDailyDrawDesc">今日運勢與智慧啟示</span>
+            </div>
+          </a>
+          <a href="https://toydogcat.github.io/ai-eastern-wisdom/zhuge-shenshu/" target="_blank" class="game-select-btn" id="btn-game-zhuge">
+            <span class="game-icon">📖</span>
+            <div class="game-info">
+              <span class="game-title" data-i18n="btnZhugeShenshu">諸葛神數・孔明神算</span>
+              <span class="game-desc" data-i18n="btnZhugeShenshuDesc">孔明三八四籤，測事解惑</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. PAGE GAME: Canvas + Controls -->
+    <section id="page-game" class="page-content hidden">
+      <div class="main-content">
+        <!-- Cube Canvas -->
+        <div class="canvas-wrapper">
+          <canvas id="cube-canvas" width="600" height="500"></canvas>
+          <div class="controls-overlay">
+            <span class="label" data-i18n="rotateView">旋轉視角：點擊並在畫布上拖曳滑鼠。</span>
+          </div>
+          <!-- Success / Congratulations Popup Overlay -->
+          <div class="success-overlay hidden" id="success-overlay">
+            <div class="success-content">
+              <h3 data-i18n="congratsTitle">🎉 恭喜還原！</h3>
+              <p><span data-i18n="congratsTime">時間:</span> <strong id="success-time">00:00</strong> | <span
+                  data-i18n="congratsMoves">步數:</span> <strong id="success-moves">0</strong></p>
+              <button class="action-btn scramble-btn" id="btn-success-close" data-i18n="closeCongrats"
+                style="margin-top: 12px; font-size: 0.9rem; padding: 8px 24px;">關閉</button>
+            </div>
           </div>
         </div>
-      </section>
 
-      <!-- 2. PAGE GAME: Canvas + Controls -->
-      <section id="page-game" class="page-content hidden">
-        <div class="main-content">
-          <!-- Cube Canvas -->
-          <div class="canvas-wrapper">
-            <canvas id="cube-canvas" width="600" height="500"></canvas>
-            <div class="controls-overlay">
-              <span class="label" data-i18n="rotateView">旋轉視角：點擊並在畫布上拖曳滑鼠。</span>
-            </div>
-            <!-- Success / Congratulations Popup Overlay -->
-            <div class="success-overlay hidden" id="success-overlay">
-              <div class="success-content">
-                <h3 data-i18n="congratsTitle">🎉 恭喜還原！</h3>
-                <p><span data-i18n="congratsTime">時間:</span> <strong id="success-time">00:00</strong> | <span data-i18n="congratsMoves">步數:</span> <strong id="success-moves">0</strong></p>
-                <button class="action-btn scramble-btn" id="btn-success-close" data-i18n="closeCongrats" style="margin-top: 12px; font-size: 0.9rem; padding: 8px 24px;">關閉</button>
+        <!-- Glassmorphism Control Panel -->
+        <aside class="control-panel">
+          <!-- Time / Moves Panel Section -->
+          <div class="panel-section stats-section" style="margin-bottom: -4px;">
+            <div class="stats-grid"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
+              <div class="stat-box"
+                style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--panel-border); padding: 12px; border-radius: 12px; text-align: center;">
+                <span class="stat-label" data-i18n="timerLabel"
+                  style="display: block; font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">時間</span>
+                <span class="stat-value" id="timer-value"
+                  style="font-size: 1.3rem; font-weight: 700; color: #10b981; font-family: monospace;">00:00</span>
               </div>
+              <div class="stat-box"
+                style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--panel-border); padding: 12px; border-radius: 12px; text-align: center;">
+                <span class="stat-label" data-i18n="movesLabel"
+                  style="display: block; font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">步數</span>
+                <span class="stat-value" id="moves-value"
+                  style="font-size: 1.3rem; font-weight: 700; color: #3b82f6; font-family: monospace;">0</span>
+              </div>
+            </div>
+            <div class="best-record" id="best-record"
+              style="font-size: 0.82rem; color: #10b981; text-align: center; display: none; padding: 6px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 8px; margin-top: 4px; margin-bottom: 8px;">
+              🎉 <span data-i18n="bestRecordLabel">最佳紀錄：</span><span id="best-record-val"></span>
             </div>
           </div>
 
-          <!-- Glassmorphism Control Panel -->
-          <aside class="control-panel">
-            <!-- Time / Moves Panel Section -->
-            <div class="panel-section stats-section" style="margin-bottom: -4px;">
-              <div class="stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
-                <div class="stat-box" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--panel-border); padding: 12px; border-radius: 12px; text-align: center;">
-                  <span class="stat-label" data-i18n="timerLabel" style="display: block; font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">時間</span>
-                  <span class="stat-value" id="timer-value" style="font-size: 1.3rem; font-weight: 700; color: #10b981; font-family: monospace;">00:00</span>
-                </div>
-                <div class="stat-box" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--panel-border); padding: 12px; border-radius: 12px; text-align: center;">
-                  <span class="stat-label" data-i18n="movesLabel" style="display: block; font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">步數</span>
-                  <span class="stat-value" id="moves-value" style="font-size: 1.3rem; font-weight: 700; color: #3b82f6; font-family: monospace;">0</span>
-                </div>
-              </div>
-              <div class="best-record" id="best-record" style="font-size: 0.82rem; color: #10b981; text-align: center; display: none; padding: 6px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 8px; margin-top: 4px; margin-bottom: 8px;">
-                🎉 <span data-i18n="bestRecordLabel">最佳紀錄：</span><span id="best-record-val"></span>
-              </div>
-            </div>
-
-            <div class="panel-section">
-              <h3 data-i18n="layerMoves">層轉動控制</h3>
-              <div class="button-grid">
-                <button class="cube-btn" id="btn-u" title="Up CW">U</button>
-                <button class="cube-btn" id="btn-u-prime" title="Up CCW">U'</button>
-                <button class="cube-btn" id="btn-d" title="Down CW">D</button>
-                <button class="cube-btn" id="btn-d-prime" title="Down CCW">D'</button>
-                <button class="cube-btn" id="btn-l" title="Left CW">L</button>
-                <button class="cube-btn" id="btn-l-prime" title="Left CCW">L'</button>
-                <button class="cube-btn" id="btn-r" title="Right CW">R</button>
-                <button class="cube-btn" id="btn-r-prime" title="Right CCW">R'</button>
-                <button class="cube-btn" id="btn-f" title="Front CW">F</button>
-                <button class="cube-btn" id="btn-f-prime" title="Front CCW">F'</button>
-                <button class="cube-btn" id="btn-b" title="Back CW">B</button>
-                <button class="cube-btn" id="btn-b-prime" title="Back CCW">B'</button>
+          <div class="panel-section">
+            <h3 data-i18n="layerMoves">層轉動控制</h3>
+            <div class="button-grid">
+              <button class="cube-btn" id="btn-u" title="Up CW">U</button>
+              <button class="cube-btn" id="btn-u-prime" title="Up CCW">U'</button>
+              <button class="cube-btn" id="btn-d" title="Down CW">D</button>
+              <button class="cube-btn" id="btn-d-prime" title="Down CCW">D'</button>
+              <button class="cube-btn" id="btn-l" title="Left CW">L</button>
+              <button class="cube-btn" id="btn-l-prime" title="Left CCW">L'</button>
+              <button class="cube-btn" id="btn-r" title="Right CW">R</button>
+              <button class="cube-btn" id="btn-r-prime" title="Right CCW">R'</button>
+              <button class="cube-btn" id="btn-f" title="Front CW">F</button>
+              <button class="cube-btn" id="btn-f-prime" title="Front CCW">F'</button>
+              <button class="cube-btn" id="btn-b" title="Back CW">B</button>
+              <button class="cube-btn" id="btn-b-prime" title="Back CCW">B'</button>
             </div>
 
             <div class="panel-section hidden" id="inner-layer-moves">
@@ -131,93 +164,100 @@
               <ul>
                 <li><span data-i18n="rotateView">旋轉視角：點擊並在畫布上拖曳滑鼠。</span></li>
                 <li><span data-i18n="rotateLayers">旋轉方塊層：點擊按鈕或使用按鍵。</span></li>
-                <li><span data-i18n="keyboardControls">鍵盤快速鍵：直接按下</span> <code>U</code>, <code>D</code>, <code>L</code>, <code>R</code>, <code>F</code>, <code>B</code><span data-i18n="holdShift">。按住 Shift 鍵可進行逆時針旋轉。</span></li>
+                <li><span data-i18n="keyboardControls">鍵盤快速鍵：直接按下</span> <code>U</code>, <code>D</code>, <code>L</code>,
+                  <code>R</code>, <code>F</code>, <code>B</code><span data-i18n="holdShift">。按住 Shift 鍵可進行逆時針旋轉。</span>
+                </li>
               </ul>
             </div>
-          </aside>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 3. PAGE SOLUTION GUIDE -->
+    <section id="page-guide" class="page-content hidden">
+      <div class="guide-card">
+        <h2 id="guide-title" data-i18n="guideTitle">魔術方塊解法密技教學</h2>
+        <p id="guide-desc" data-i18n="guideDesc">這裡提供 2x2x2 與 3x3x3 的主流還原步驟與核心口訣：</p>
+
+        <div class="guide-category">
+          <h3 class="category-heading" data-i18n="guideMode2Title">2x2x2 解法 (底層架橋法 Layer-by-Layer)</h3>
+          <div class="guide-steps">
+            <div class="step-box">
+              <h4 data-i18n="mode2Step1Title">步驟 1: 底層架橋 (First Layer)</h4>
+              <p data-i18n="mode2Step1Desc">選定一個顏色作為底面（通常是白色），將四個對應角塊對齊側面顏色並拼在同一層。利用基本公式 <code>R U R' U'</code> 可調整角塊方向。
+              </p>
+            </div>
+            <div class="step-box">
+              <h4 data-i18n="mode2Step2Title">步驟 2: 頂面定向 (OLL)</h4>
+              <p data-i18n="mode2Step2Desc">將底面朝下觀察頂面，使用 <code>R U R' U R U2 R'</code> 小魚公式將頂面顏色全部翻轉一致。</p>
+            </div>
+            <div class="step-box">
+              <h4 data-i18n="mode2Step3Title">步驟 3: 頂面排列 (PLL)</h4>
+              <p data-i18n="mode2Step3Desc">觀察頂層側面顏色，若有相鄰對稱色則對準左側，套用 <code>R U2 R' U' R U2 L' U R' U' L</code> 解決最後角塊對齊。
+              </p>
+            </div>
+          </div>
         </div>
-      </section>
 
-      <!-- 3. PAGE SOLUTION GUIDE -->
-      <section id="page-guide" class="page-content hidden">
-        <div class="guide-card">
-          <h2 id="guide-title" data-i18n="guideTitle">魔術方塊解法密技教學</h2>
-          <p id="guide-desc" data-i18n="guideDesc">這裡提供 2x2x2 與 3x3x3 的主流還原步驟與核心口訣：</p>
-          
-          <div class="guide-category">
-            <h3 class="category-heading" data-i18n="guideMode2Title">2x2x2 解法 (底層架橋法 Layer-by-Layer)</h3>
-            <div class="guide-steps">
-              <div class="step-box">
-                <h4 data-i18n="mode2Step1Title">步驟 1: 底層架橋 (First Layer)</h4>
-                <p data-i18n="mode2Step1Desc">選定一個顏色作為底面（通常是白色），將四個對應角塊對齊側面顏色並拼在同一層。利用基本公式 <code>R U R' U'</code> 可調整角塊方向。</p>
-              </div>
-              <div class="step-box">
-                <h4 data-i18n="mode2Step2Title">步驟 2: 頂面定向 (OLL)</h4>
-                <p data-i18n="mode2Step2Desc">將底面朝下觀察頂面，使用 <code>R U R' U R U2 R'</code> 小魚公式將頂面顏色全部翻轉一致。</p>
-              </div>
-              <div class="step-box">
-                <h4 data-i18n="mode2Step3Title">步驟 3: 頂面排列 (PLL)</h4>
-                <p data-i18n="mode2Step3Desc">觀察頂層側面顏色，若有相鄰對稱色則對準左側，套用 <code>R U2 R' U' R U2 L' U R' U' L</code> 解決最後角塊對齊。</p>
-              </div>
+        <div class="guide-category" style="margin-top: 32px;">
+          <h3 class="category-heading" data-i18n="guideMode3Title">3x3x3 解法 (主流 CFOP 還原法)</h3>
+          <div class="guide-steps">
+            <div class="step-box">
+              <h4 data-i18n="step1Title">步驟 1: 底面十字 (Cross)</h4>
+              <p data-i18n="step1Desc">在底面（通常是白色）拼出一個正確對齊側面顏色的十字。這是整個還原的基礎。</p>
+            </div>
+            <div class="step-box">
+              <h4 data-i18n="step2Title">步驟 2: 前兩層 (F2L)</h4>
+              <p data-i18n="step2Desc">將底層的四個角塊與第二層的四個邊塊成對放入對應位置，同時完成兩層。</p>
+            </div>
+            <div class="step-box">
+              <h4 data-i18n="step3Title">步驟 3: 頂面定向 (OLL)</h4>
+              <p data-i18n="step3Desc">將頂層（通常是黃色）朝上的面全部翻轉為相同顏色，總共有 57 種情況。</p>
+            </div>
+            <div class="step-box">
+              <h4 data-i18n="step4Title">步驟 4: 頂面排列 (PLL)</h4>
+              <p data-i18n="step4Desc">調整頂層邊塊與角塊的相對位置，完成最後還原。總共有 21 種情況。</p>
             </div>
           </div>
-
-          <div class="guide-category" style="margin-top: 32px;">
-            <h3 class="category-heading" data-i18n="guideMode3Title">3x3x3 解法 (主流 CFOP 還原法)</h3>
-            <div class="guide-steps">
-              <div class="step-box">
-                <h4 data-i18n="step1Title">步驟 1: 底面十字 (Cross)</h4>
-                <p data-i18n="step1Desc">在底面（通常是白色）拼出一個正確對齊側面顏色的十字。這是整個還原的基礎。</p>
-              </div>
-              <div class="step-box">
-                <h4 data-i18n="step2Title">步驟 2: 前兩層 (F2L)</h4>
-                <p data-i18n="step2Desc">將底層的四個角塊與第二層的四個邊塊成對放入對應位置，同時完成兩層。</p>
-              </div>
-              <div class="step-box">
-                <h4 data-i18n="step3Title">步驟 3: 頂面定向 (OLL)</h4>
-                <p data-i18n="step3Desc">將頂層（通常是黃色）朝上的面全部翻轉為相同顏色，總共有 57 種情況。</p>
-              </div>
-              <div class="step-box">
-                <h4 data-i18n="step4Title">步驟 4: 頂面排列 (PLL)</h4>
-                <p data-i18n="step4Desc">調整頂層邊塊與角塊的相對位置，完成最後還原。總共有 21 種情況。</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="guide-category" style="margin-top: 32px;">
-            <h3 class="category-heading" data-i18n="guideMode4Title">4x4x4 解法 (降階法 Reduction Method)</h3>
-            <div class="guide-steps">
-              <div class="step-box">
-                <h4 data-i18n="mode4Step1Title">步驟 1: 組中心塊 (Centers)</h4>
-                <p data-i18n="mode4Step1Desc">先將六個面的中心 4 塊顏色各自組合對齊。利用簡單的 U, D, L, R 的內層轉動來拼好對應中心的 4 個色塊。</p>
-              </div>
-              <div class="step-box">
-                <h4 data-i18n="mode4Step2Title">步驟 2: 合併邊塊 (Edges)</h4>
-                <p data-i18n="mode4Step2Desc">將 12 條邊對應的兩兩邊塊兩兩合併，完成所有的邊塊合併。</p>
-              </div>
-              <div class="step-box">
-                <h4 data-i18n="mode4Step3Title">步驟 3: 3x3x3 還原 & 特例處理 (3x3 Stage & Parity)</h4>
-                <p data-i18n="mode4Step3Desc">當作 3x3x3 還原，注意最後可能會遇到單邊反轉或鄰角交換的「特例情況 (Parities)」，需用特例公式解決。</p>
-              </div>
-            </div>
-          </div>
-
-          <button class="action-btn back-to-game" id="btn-back-to-game" data-i18n="backToGame" style="margin-top: 32px;">回到遊戲</button>
         </div>
-      </section>
 
-      <!-- Busuanzi Visitor / View Counter -->
-      <footer class="app-footer" style="margin-top: 40px; text-align: center; font-size: 0.9rem; color: var(--text-muted); opacity: 0.8;">
-        <span id="busuanzi_container_site_pv" style="display:none">
-          <span data-i18n="totalViews">總訪問量</span>: <span id="busuanzi_value_site_pv"></span>
-        </span>
-        <span id="busuanzi_container_site_uv" style="display:none; margin-left: 20px;">
-          <span data-i18n="totalVisitors">訪客數</span>: <span id="busuanzi_value_site_uv"></span>
-        </span>
-      </footer>
-    </div>
+        <div class="guide-category" style="margin-top: 32px;">
+          <h3 class="category-heading" data-i18n="guideMode4Title">4x4x4 解法 (降階法 Reduction Method)</h3>
+          <div class="guide-steps">
+            <div class="step-box">
+              <h4 data-i18n="mode4Step1Title">步驟 1: 組中心塊 (Centers)</h4>
+              <p data-i18n="mode4Step1Desc">先將六個面的中心 4 塊顏色各自組合對齊。利用簡單的 U, D, L, R 的內層轉動來拼好對應中心的 4 個色塊。</p>
+            </div>
+            <div class="step-box">
+              <h4 data-i18n="mode4Step2Title">步驟 2: 合併邊塊 (Edges)</h4>
+              <p data-i18n="mode4Step2Desc">將 12 條邊對應的兩兩邊塊兩兩合併，完成所有的邊塊合併。</p>
+            </div>
+            <div class="step-box">
+              <h4 data-i18n="mode4Step3Title">步驟 3: 3x3x3 還原 & 特例處理 (3x3 Stage & Parity)</h4>
+              <p data-i18n="mode4Step3Desc">當作 3x3x3 還原，注意最後可能會遇到單邊反轉或鄰角交換的「特例情況 (Parities)」，需用特例公式解決。</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="action-btn back-to-game" id="btn-back-to-game" data-i18n="backToGame"
+          style="margin-top: 32px;">回到遊戲</button>
+      </div>
+    </section>
+
+    <!-- Busuanzi Visitor / View Counter -->
+    <footer class="app-footer"
+      style="margin-top: 40px; text-align: center; font-size: 0.9rem; color: var(--text-muted); opacity: 0.8;">
+      <span id="busuanzi_container_site_pv" style="display:none">
+        <span data-i18n="totalViews">總訪問量</span>: <span id="busuanzi_value_site_pv"></span>
+      </span>
+      <span id="busuanzi_container_site_uv" style="display:none; margin-left: 20px;">
+        <span data-i18n="totalVisitors">訪客數</span>: <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </footer>
+  </div>
 
 
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>
