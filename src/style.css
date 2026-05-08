@@ -521,8 +521,8 @@ body {
 }
 
 .games-buttons {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 16px;
   justify-content: center;
   align-items: stretch;
@@ -530,12 +530,11 @@ body {
 
 @media (min-width: 600px) {
   .games-buttons {
-    flex-direction: row;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 .game-select-btn {
-  flex: 1;
   text-decoration: none;
   font-family: 'Outfit', sans-serif;
   background: rgba(255, 255, 255, 0.02);
@@ -553,10 +552,44 @@ body {
 }
 
 .game-select-btn:hover {
-  border-color: #ec4899;
-  background: rgba(236, 72, 153, 0.06);
   transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.12), 0 0 15px rgba(168, 85, 247, 0.1);
+}
+
+/* Individual Game Card Hover Customizations */
+#btn-game-draw:hover {
+  border-color: #ec4899;
+  background: rgba(236, 72, 153, 0.05);
+  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15), 0 0 15px rgba(168, 85, 247, 0.1);
+}
+#btn-game-draw:hover .game-title {
+  color: #f472b6;
+}
+
+#btn-game-zhuge:hover {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.05);
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.15), 0 0 15px rgba(217, 119, 6, 0.1);
+}
+#btn-game-zhuge:hover .game-title {
+  color: #fbbf24;
+}
+
+#btn-game-chess:hover {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15), 0 0 15px rgba(29, 78, 216, 0.1);
+}
+#btn-game-chess:hover .game-title {
+  color: #60a5fa;
+}
+
+#btn-game-landmine:hover {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15), 0 0 15px rgba(4, 120, 87, 0.1);
+}
+#btn-game-landmine:hover .game-title {
+  color: #34d399;
 }
 
 .game-icon {
