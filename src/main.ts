@@ -742,14 +742,4 @@ volumeSlider?.addEventListener('input', (e) => {
   audio.volume = vol;
 });
 
-// Play background music automatically on first user click or interaction
-const startPlayingOnInteraction = () => {
-  if (!isPlaying) {
-    updatePlayerState(true);
-  }
-  document.removeEventListener('click', startPlayingOnInteraction);
-  document.removeEventListener('keydown', startPlayingOnInteraction);
-};
 
-document.addEventListener('click', startPlayingOnInteraction);
-document.addEventListener('keydown', startPlayingOnInteraction);
