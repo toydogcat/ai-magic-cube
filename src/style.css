@@ -910,3 +910,68 @@ body {
     width: 250px;
   }
 }
+
+/* Premium Visitor Counter Styling referenced from ai-news */
+.app-footer {
+  margin-top: 48px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.visitor-counter-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.counter-pill {
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #94a3b8;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.counter-pill:hover {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #f3f4f6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+}
+
+.counter-icon {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.counter-value {
+  font-family: 'Outfit', monospace;
+  font-weight: 700;
+  color: #60a5fa;
+  margin-left: 2px;
+}
+
+.counter-pill:hover .counter-value {
+  color: #3b82f6;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+@media (max-width: 480px) {
+  .visitor-counter-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

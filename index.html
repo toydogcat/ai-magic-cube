@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://www.vercount.one/js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -258,15 +258,20 @@
       </div>
     </section>
 
-    <!-- Busuanzi Visitor / View Counter -->
-    <footer class="app-footer"
-      style="margin-top: 40px; text-align: center; font-size: 0.9rem; color: var(--text-muted); opacity: 0.8;">
-      <span id="busuanzi_container_site_pv" style="display:none">
-        <span data-i18n="totalViews">總訪問量</span>: <span id="busuanzi_value_site_pv"></span>
-      </span>
-      <span id="busuanzi_container_site_uv" style="display:none; margin-left: 20px;">
-        <span data-i18n="totalVisitors">訪客數</span>: <span id="busuanzi_value_site_uv"></span>
-      </span>
+    <!-- Visitor / View Counter Inspired by ai-news premium styling -->
+    <footer class="app-footer">
+      <div class="visitor-counter-wrapper">
+        <span id="busuanzi_container_site_pv" style="display:none" class="counter-pill">
+          <span class="counter-icon">👁️</span>
+          <span data-i18n="totalViews">總訪問量</span>
+          <span id="busuanzi_value_site_pv" class="counter-value"></span>
+        </span>
+        <span id="busuanzi_container_site_uv" style="display:none" class="counter-pill">
+          <span class="counter-icon">👤</span>
+          <span data-i18n="totalVisitors">訪客數</span>
+          <span id="busuanzi_value_site_uv" class="counter-value"></span>
+        </span>
+      </div>
     </footer>
 
     <!-- Floating BGM Player -->
